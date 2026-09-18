@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { BottomNav } from "@/components/BottomNav";
@@ -19,6 +19,15 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "UPI Split",
   description: "Simulated UPI payments with automatic split for large amounts.",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "UPI Split",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#14532d",
 };
 
 export default function RootLayout({
