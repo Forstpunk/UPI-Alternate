@@ -2,14 +2,23 @@
 
 import { useMemo, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ChevronDown, Receipt } from "lucide-react"
+import { ChevronDown, Download, Receipt } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { InitialAvatar } from "@/components/InitialAvatar"
 import { useStore } from "@/lib/store"
 import { formatCurrency, formatDateLabel, formatTime } from "@/lib/format"
+import { downloadCsv, transactionsToCsv } from "@/lib/exportCsv"
 import type { Transaction } from "@/lib/types"
 
 export default function HistoryPage() {
   const transactions = useStore((s) => s.transactions)
+
+  function handleExport() {
+    const sorted = [...transactions].sort((a, b) => b.timestamp - a.timestamp)
+    const csv = transactionsToCsv(sorted)
+    const date = new Date().toISOString().slice(0, 10)
+    downloadCsv(`upi-split-transactions-${date}.csv`, csv)
+  }
 
   const grouped = useMemo(() => {
     const sorted = [...transactions].sort((a, b) => b.timestamp - a.timestamp)
@@ -27,11 +36,19 @@ export default function HistoryPage() {
 
   return (
     <main className="flex flex-col gap-4 px-4 py-6">
-      <header>
-        <h1 className="text-xl font-semibold tracking-tight">Transaction history</h1>
-        <p className="text-sm text-muted-foreground">
-          All your payments, newest first.
-        </p>
+      <header className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight">Transaction history</h1>
+          <p className="text-sm text-muted-foreground">
+            All your payments, newest first.
+          </p>
+        </div>
+        {transactions.length > 0 && (
+          <Button variant="outline" size="sm" onClick={handleExport}>
+            <Download className="mr-1.5 h-3.5 w-3.5" />
+            Export CSV
+          </Button>
+        )}
       </header>
 
       {transactions.length === 0 ? (
