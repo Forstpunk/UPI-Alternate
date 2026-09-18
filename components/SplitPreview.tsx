@@ -9,6 +9,7 @@ import { splitAmount } from "@/lib/splitAmount"
 import { mockProcess } from "@/lib/mockProcess"
 import { useStore } from "@/lib/store"
 import { formatCurrency } from "@/lib/format"
+import { UpiPinPad } from "@/components/UpiPinPad"
 
 type ChunkStatus = "pending" | "processing" | "done"
 
@@ -40,6 +41,7 @@ export function SplitPreview({ amount, payee, onDone }: SplitPreviewProps) {
   const [isProcessing, setIsProcessing] = useState(false)
   const [isComplete, setIsComplete] = useState(false)
   const [showInfo, setShowInfo] = useState(false)
+  const [showPinPad, setShowPinPad] = useState(false)
 
   const addTransaction = useStore((s) => s.addTransaction)
   const deductBalance = useStore((s) => s.deductBalance)
@@ -47,6 +49,7 @@ export function SplitPreview({ amount, payee, onDone }: SplitPreviewProps) {
   async function handlePay() {
     if (isProcessing || isComplete) return
 
+    setShowPinPad(false)
     setIsProcessing(true)
     setStatuses((prev) => prev.map((s, i) => (i === 0 ? "processing" : s)))
 
@@ -80,6 +83,17 @@ export function SplitPreview({ amount, payee, onDone }: SplitPreviewProps) {
 
   if (isComplete) {
     return <SuccessScreen amount={amount} payee={payee} onDone={onDone} />
+  }
+
+  if (showPinPad) {
+    return (
+      <UpiPinPad
+        amount={amount}
+        payeeName={payee.name}
+        onSuccess={handlePay}
+        onCancel={() => setShowPinPad(false)}
+      />
+    )
   }
 
   return (
@@ -136,7 +150,7 @@ export function SplitPreview({ amount, payee, onDone }: SplitPreviewProps) {
       <Button
         size="lg"
         className="mt-2 w-full"
-        onClick={handlePay}
+        onClick={() => setShowPinPad(true)}
         disabled={isProcessing}
       >
         {isProcessing ? (
