@@ -1,14 +1,14 @@
 "use client"
 
 import Link from "next/link"
-import { Send, Download, ScanLine, Clock } from "lucide-react"
+import { Send, UsersRound, ScanLine, Clock } from "lucide-react"
 import { useStore } from "@/lib/store"
 import { BalanceCard } from "@/components/BalanceCard"
 import { RecentTransactions } from "@/components/RecentTransactions"
 
 const quickActions = [
   { href: "/send", label: "Send", icon: Send },
-  { href: "/send", label: "Request", icon: Download },
+  { href: "/split", label: "Split", icon: UsersRound },
   { href: "/receive", label: "Scan", icon: ScanLine },
   { href: "/history", label: "History", icon: Clock },
 ]

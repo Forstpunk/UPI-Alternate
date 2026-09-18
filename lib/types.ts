@@ -16,3 +16,19 @@ export interface Contact {
   upiId: string
   avatar?: string
 }
+
+export interface SplitBillParticipant {
+  contactId: string
+  name: string
+  upiId: string
+  amount: number
+  paid: boolean
+}
+
+export interface SplitBill {
+  id: string
+  title: string
+  totalAmount: number
+  participants: SplitBillParticipant[]
+  timestamp: number
+}

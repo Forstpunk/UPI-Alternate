@@ -2,13 +2,14 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, Send, QrCode, Clock } from "lucide-react"
+import { Home, Send, QrCode, Clock, UsersRound } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const tabs = [
   { href: "/", label: "Home", icon: Home },
   { href: "/send", label: "Send", icon: Send },
   { href: "/receive", label: "Receive", icon: QrCode },
+  { href: "/split", label: "Split", icon: UsersRound },
   { href: "/history", label: "History", icon: Clock },
 ]
 
